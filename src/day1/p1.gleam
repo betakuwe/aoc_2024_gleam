@@ -1,0 +1,30 @@
+import gleam/int
+import gleam/list
+import gleam/regexp
+import gleam/string
+import simplifile
+
+pub fn solution(filepath) {
+  let assert Ok(file) = simplifile.read(filepath)
+  let assert Ok(whitespace_regex) = regexp.from_string("\\s+")
+  string.trim(file)
+  |> string.split("\n")
+  |> list.map(fn(row) {
+    regexp.split(whitespace_regex, row)
+    |> list.map(fn(num_string) {
+      let assert Ok(num) = int.parse(num_string)
+      num
+    })
+  })
+  |> list.transpose
+  |> list.map(list.sort(_, int.compare))
+  |> list.transpose
+  |> list.map(fn(pair) {
+    let assert [a, b] = pair
+    case a < b {
+      True -> b - a
+      False -> a - b
+    }
+  })
+  |> list.fold(0, fn(a, b) { a + b })
+}
