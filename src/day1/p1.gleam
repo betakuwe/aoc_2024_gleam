@@ -2,10 +2,8 @@ import gleam/int
 import gleam/list
 import gleam/regexp
 import gleam/string
-import simplifile
 
-pub fn solution(filepath) {
-  let assert Ok(file) = simplifile.read(filepath)
+pub fn solution(file) {
   let assert Ok(whitespace_regex) = regexp.from_string("\\s+")
   string.trim(file)
   |> string.split("\n")
